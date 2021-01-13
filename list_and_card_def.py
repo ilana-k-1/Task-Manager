@@ -2,14 +2,20 @@ import datetime
 
 class List:
     """docstring for List."""
-    def __init__(self, title='newlist', cards=[]):
+    def __init__(self, title='new list', cards=[]):
         self.title = title
         self.cards = cards
 
-    def add(self,card_text, due_date=None):
+    def add(self,card_text='new card', due_date=None):
         new_card = Card(card_text, due_date)
         self.cards.append(new_card)
         return(new_card)
+
+    def total_time_elapsed(self):
+        time= datetime.timedelta() #defaults to 0
+        for card in self.cards:
+            time = time + card.total_time_elapsed()
+        return(time)
 
 
 class Card:
@@ -37,7 +43,13 @@ class Card:
     def elapsed_time(self):
         if self.start_time:
             current_time=datetime.datetime.now()
-            elapsed_time=current_time - self.start_time
+            elapsed_time=current_time - self.start_time #this gives a timedelta object not a number
             return(elapsed_time)
         else:
             return(None)#task hasn't been started
+
+    def total_time_elapsed(self):
+        total = datetime.timedelta() #defaults to 0
+        for tuple in self.log:
+            total = total + tuple[1]
+        return(total)#returns a timedelta object
