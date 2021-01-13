@@ -1,0 +1,18 @@
+list class:
+  has:
+    title
+    list of cards
+
+card class:
+  has:
+    card text
+    date created
+    due date
+    status codes: active, inactive, complete
+    time sheet
+    methods for:
+      starting timer
+      ending timer
+      getting amount of time elapsed while timer is active
+
+saving:
