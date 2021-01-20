@@ -36,10 +36,12 @@ class ListBox(BoxLayout): #this visualizes a single list
 class ListLayout(GridLayout): #this is the layout for all the lists
     title = StringProperty('')
     def __init__(self, list_array, **kwargs):
-        super(ListLayout, self).__init__(cols = len(list_array), **kwargs)
+        super(ListLayout, self).__init__(cols = len(list_array)+1, **kwargs)
         for list in list_array:
             list_layout = ListBox(list)
             self.add_widget(list_layout)
+        add_new_list = Button(text = 'add new list')
+        self.add_widget(add_new_list)
 
 class MainApp(App):
     def build(self):
