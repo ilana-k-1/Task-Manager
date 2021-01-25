@@ -4,49 +4,47 @@ from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
-from kivy.properties import StringProperty
+from kivy.properties import StringProperty, ObjectProperty
+from kivy.clock import Clock
 
 import list_and_card_def as List
 import list_support
 
-class add_new_card(Button):
-    pass
-
-class Card(Button): #this visualizes a single card
-    pass
-
-class CardLayout(BoxLayout): #this the cards in a list
-    def __init__(self, card_array, **kwargs):
-        super().__init__(orientation = 'vertical', **kwargs)
-        for card in card_array:
-            new_card = Card(text = card.text)
-            self.add_widget(new_card)
-
-class ListBox(BoxLayout): #this visualizes a single list
-    def __init__(self, list, **kwargs):
-        super().__init__(orientation = 'vertical', **kwargs)
-        title = Label(text = list.title)
-        cards = CardLayout(list.cards)
-        button = add_new_card( text = 'add a new card!')
-        self.add_widget(title)
-        self.add_widget(cards)
-        self.add_widget(button)
+class Card_graphics(Button):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
 
-class ListLayout(GridLayout): #this is the layout for all the lists
+
+class list_graphics(BoxLayout):
+    #initialize and delay, maybe pass data to attribute
+    cards = ObjectProperty([])
+    view = ObjectProperty(None)
     title = StringProperty('')
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        # self.view.data = [{'text':str(x)} for x in range(5)]
+        Clock.schedule_once(self.delayed_init,0)
+
+    def delayed_init(self, arg):
+        self.view.data = [{'text': card.text} for card in self.cards]
+
+
+
+class Layout_of_lists(BoxLayout):
+    view = ObjectProperty(None)
     def __init__(self, list_array, **kwargs):
-        super(ListLayout, self).__init__(cols = len(list_array)+1, **kwargs)
-        for list in list_array:
-            list_layout = ListBox(list)
-            self.add_widget(list_layout)
-        add_new_list = Button(text = 'add new list')
-        self.add_widget(add_new_list)
+        super().__init__(**kwargs)
+        self.view.data = [{'title':list.title, 'cards':list.cards} for list in list_array]
+
+    pass
 
 class MainApp(App):
     def build(self):
         list_array = list_support.get_all_lists()
-        lists = ListLayout(list_array)
+        print(list_array)
+        lists = Layout_of_lists(list_array)
+        # lists = list_graphics()
         return lists
 
 if __name__ == "__main__":

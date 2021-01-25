@@ -1,0 +1,31 @@
+<list_graphics>:
+    view: cardsview
+    orientation: 'vertical'
+    Label:
+        id: title_text
+        text: root.title
+    RecycleView:
+        id: cardsview
+        viewclass: 'Card_graphics'
+        RecycleBoxLayout:
+            default_size: None, dp(56)
+            default_size_hint: 1, None
+            size_hint_y: None
+            height: self.minimum_height
+            orientation: 'vertical'
+            spacing: dp(2)
+
+
+
+<Layout_of_lists>:
+    view: listsview
+    RecycleView:
+        id: listsview
+        viewclass: 'list_graphics'
+        RecycleBoxLayout:
+            default_size: None, dp(56)
+            default_size_hint: 1, None
+            size_hint_y: None
+            height: self.minimum_height
+            orientation: 'horizontal'
+            spacing: dp(2)
